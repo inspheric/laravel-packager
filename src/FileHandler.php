@@ -25,7 +25,7 @@ trait FileHandler
      */
     public function vendorPath()
     {
-        return $this->packagesPath().'/'.$this->vendor();
+        return $this->packagesPath().'/'.str_snake($this->vendor());
     }
 
     /**
@@ -35,7 +35,7 @@ trait FileHandler
      */
     public function packagePath()
     {
-        return $this->vendorPath().'/'.$this->package();
+        return str_snake($this->vendorPath()).'/'.str_snake($this->package());
     }
 
     /**
@@ -156,8 +156,8 @@ trait FileHandler
     public function renameFiles($manifest = null)
     {
         $bindings = [
-            [':uc:vendor', ':uc:package', ':lc:vendor', ':lc:package'],
-            [$this->vendor(), $this->package(), strtolower($this->vendor()), strtolower($this->package())],
+            [':uc:vendor', ':uc:package', ':lc:vendor', ':lc:package', ':ucs:package', ':lcs:package'],
+            [$this->vendor(), $this->package(), strtolower($this->vendor()), strtolower($this->package()), str_singular($this->package()), str_singular(strtolower($this->package()))],
         ];
 
         $rewrites = require ($manifest === null) ? [
